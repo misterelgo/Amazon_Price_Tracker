@@ -11,7 +11,19 @@ load_dotenv()
 
 
 Amazon_link = "https://appbrewery.github.io/instant_pot/"
-r = requests.get(Amazon_link)
+header = {
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+    "upgrade-insecure-requests": "1",
+    "sec-fetch-site": "cross-site",
+    "sec-fetch-mode": "navigate",
+    "sec-fetch-dest": "document",
+    "Sec-Fetch-User": "?1",
+    "x-forwarded-proto": "https",
+    "priority": "u=0, i",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
+    "X-Forwarded-For": "154.125.154.221"
+}
+r = requests.get(Amazon_link, headers=header)
 print(r.status_code)
 soup = BeautifulSoup(r.text, 'html.parser')
 product_price_whole = soup.find('span',"a-price-whole")
@@ -22,7 +34,7 @@ product_title = soup.find(id="productTitle").get_text().strip()
 print(product_title)
 print(product_price)
 
-preset_value = 100
+preset_value = 70
 
 #sending email notification
 email_receiver = os.environ.get("EMAIL_ADDRESS")
